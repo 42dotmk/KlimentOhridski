@@ -1,0 +1,30 @@
+---
+import Image from "astro/components/Image.astro";
+import Quotes from "./icons/quotes.svg";
+
+import { fetchPerPageAndComponent } from "../lib/strapi";
+import { Components, Pages } from "../constants";
+
+import type { StrapiText } from "../types";
+
+const text = await fetchPerPageAndComponent<StrapiText[]>({
+  endpoint: "texts?populate=*",
+  wrappedByKey: "data",
+  page: Pages.Pocetna,
+  component: Components.Quote,
+});
+---
+
+<div
+  class="relative left-1/2 transform -translate-x-1/2 px-2 lg:mt-20 w-full md:w-[50%]"
+>
+  <Image
+    src={Quotes}
+    alt="quotes"
+    class="relative justify-self-end transform rotate-180 w-14 h-14 lg:w-28 lg:h-28"
+  />
+  <div class="text-lg lg:text-3xl font-medium text-center mx-14">
+    {text?.[0]?.text}
+  </div>
+  <Image src={Quotes} alt="quotes" class="w-14 h-14 lg:w-28 lg:h-28" />
+</div>

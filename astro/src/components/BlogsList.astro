@@ -1,0 +1,30 @@
+---
+import type { BlocksContent } from "@strapi/blocks-react-renderer";
+import { fetchApi } from "../lib/strapi";
+import type { Post } from "../types";
+import BlogCard from "./BlogCard.astro";
+import { getAbsoluteUrl } from "../lib/strapi";
+import Button from "./Button.astro";
+
+const { posts } = Astro.props;
+---
+
+<div class="flex flex-col justify-center items-center px-4 gap-16">
+  <h1 class="text-3xl sm:text-5xl font-bold text-center pb-8 lg:pb-0">Блог</h1>
+  <div class="flex flex-wrap gap-10 px-4 md:px-20 lg:px-24 justify-center">
+    {
+      posts.map((post: Post) => {
+        const content = post.content as BlocksContent;
+        return (
+          <BlogCard
+            image={getAbsoluteUrl(post.images?.[0].url)}
+            title={post.title}
+            date={post.publishedAt}
+            slug={post.slug}
+            content={content}
+          />
+        );
+      })
+    }
+  </div>
+</div>

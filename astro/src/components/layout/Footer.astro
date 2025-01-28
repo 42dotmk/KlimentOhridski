@@ -1,0 +1,28 @@
+---
+import Image from "astro/components/Image.astro";
+import Contact from "../Contact.astro";
+
+import Flower from "../icons/flower.svg";
+import Star from "../icons/star.svg";
+
+---
+
+<div class='flex flex-col'>
+  <Image
+    src={Star}
+    alt="star"
+    class="transform rotate-[25.89deg] relative self-end top-20 right-[6%]"
+  />
+  <div class="flex flex-col justify-center items-center md:gap-40 gap-28">
+    <Contact />
+    <footer class="bg-primary text-center py-4 max-w-md font-medium text-base">
+      <p>2024 ОУРЦ Св. Климент Охридски - Ново Село, Струмица.</p>
+      <p>Сите права се задржани.</p>
+    </footer>
+  </div>
+  <Image
+    src={Flower}
+    alt="flower"
+    class="transform rotate-[22.97deg] relative bottom-44 left-16 hidden md:block"
+  />
+</div>

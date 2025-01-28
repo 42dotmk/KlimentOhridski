@@ -1,0 +1,60 @@
+---
+import Image from "astro/components/Image.astro";
+
+import Board from "./icons/board.svg";
+import Book from "./icons/book.svg";
+import { fetchPerPageAndComponent, getAbsoluteUrl } from "../lib/strapi";
+import type { StrapiImage, StrapiText } from "../types";
+import { Components, Pages } from "../constants";
+
+const images = await fetchPerPageAndComponent<StrapiImage[]>({
+  endpoint: "images?populate=*",
+  wrappedByKey: "data",
+  page: Pages.Pocetna,
+  component: Components.ForUs,
+});
+
+const text = await fetchPerPageAndComponent<StrapiText[]>({
+  endpoint: "texts?populate=*",
+  wrappedByKey: "data",
+  page: Pages.Pocetna,
+  component: Components.ForUs,
+});
+---
+
+<div class="px-3 lg:px-80">
+  <h1 class="text-3xl sm:text-5xl font-bold text-center pb-8 lg:pb-0">
+    За Нас
+  </h1>
+  <div class="flex flex-col gap-5 items-center">
+    <div class="relative top-0 lg:top-[-70px]">
+      <div class="flex flex-col items-end">
+        <Image
+          src={Board}
+          alt="board"
+          class="relative top-28 left-44 hidden lg:block"
+        />
+        <Image
+          src=`${getAbsoluteUrl(images?.[0]?.image?.url)}`
+          alt={images?.[0]?.alt}
+          width="500"
+          height="500"
+          class="bg-background border-primary border-2 rounded-lg shadow-[rgba(235,_171,_0,_1)_6px_6px_0px_0px] transform rotate-[1.84deg] h-auto w-[500px] px-2 pt-2 pb-6 sm:h-auto sm:w-[710px] sm:px-4 sm:pt-4 sm:pb-12"
+        />
+      </div>
+      <Image
+        src={Book}
+        alt="book"
+        class="relative top-[-50px] lg:top-[-50px] left-[-30px] lg:left-[-115px] w-28 h-16 md:w-44 md:h-36"
+      />
+    </div>
+    <div
+      class="flex flex-col gap-8 text-justify text-lg font-medium px-4 lg:px-0 xl:w-[70%] relative top-0 md:top-[-70px]"
+    >
+      <p>
+        {text?.[0]?.text}
+      </p>
+      <p>{text?.[1]?.text}</p>
+    </div>
+  </div>
+</div>

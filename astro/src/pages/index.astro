@@ -1,0 +1,39 @@
+---
+import Hero from "../components/Hero.astro";
+import Quote from "../components/Quote.astro";
+import ForUs from "../components/ForUs.astro";
+import OurWork from "../components/OurWork.astro";
+import MainLayout from "../components/layout/MainLayout.astro";
+import { fetchApi } from "../lib/strapi";
+import type { Post, Service } from "../types";
+import Button from "../components/Button.astro";
+import BlogsList from "../components/BlogsList.astro";
+import ServicesList from "../components/ServicesList.astro";
+
+const services = await fetchApi<Service[]>({
+  endpoint: "services?populate=*",
+  limit: 3,
+});
+
+const posts = await fetchApi<Post[]>({
+  endpoint: "posts?populate=*",
+  limit: 3,
+});
+---
+
+<MainLayout>
+  <Hero />
+  <div class="flex flex-col gap-10 md:gap-20">
+    <Quote />
+    <div class="flex flex-col justify-center items-center px-4 gap-16">
+      <ServicesList services={services} />
+      <Button url="/uslugi" text="Прочитај повеќе" />
+    </div>
+    <ForUs />
+    <OurWork />
+    <div class="flex flex-col justify-center items-center px-4 gap-16">
+      <BlogsList posts={posts} />
+      <Button url="/blog/" text="Види ги сите" />
+    </div>
+  </div>
+</MainLayout>

@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import ArrowRight from "./ArrowRight.astro";
+
+const { title, date, slug, content, image } = Astro.props;
+
+const formatDate = date.toLocaleString("mk-MK").split(",")[0];
+---
+
+<div class="flex flex-col gap-3 w-[360px]">
+  <Image
+    src={image}
+    alt={title}
+    width="200"
+    height="220"
+    class="object-cover rounded-lg h-56 w-auto"
+  />
+  <p class="text-mainYellow">{formatDate}</p>
+  <h2
+    class="text-xl font-semibold overflow-hidden whitespace-nowrap text-ellipsis"
+  >
+    {title}
+  </h2>
+  <p class="overflow-hidden whitespace-nowrap text-ellipsis">
+    {content[0].children[0].text}
+  </p>
+  <a href={`/blog/${slug}`} class="self-end font-semibold flex"
+    >Прочитај повеќе
+    <ArrowRight width="20" height="20" class="inline" fill="#422800" />
+  </a>
+</div>

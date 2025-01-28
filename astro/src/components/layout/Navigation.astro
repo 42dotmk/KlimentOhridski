@@ -1,0 +1,37 @@
+---
+import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
+
+const currentPath = Astro.url.pathname;
+
+const tabs = [
+  { text: "Почетна", href: "/" },
+  { text: "Услуги", href: "/uslugi" },
+  { text: "Проекти", href: "/proekti" },
+  { text: "Блог", href: "/blog" },
+  { text: "Контакт", href: "/kontakt" },
+];
+---
+
+<nav class="flex gap-10 font-normal text-lg">
+  <Astronav>
+    <div class="flex w-full justify-between">
+      <div class="block lg:hidden">
+        <MenuIcon class="w-5 h-5 text-gray-800" />
+      </div>
+    </div>
+    <MenuItems class="hidden border-4 p-8 bg-background border-primary rounded absolute top-20 right-5 lg:flex lg:top-0 lg:right-0 lg:border-none z-10">
+      <ul class="flex flex-col lg:flex-row lg:gap-10">
+        {
+          tabs.map((tab) => {
+            const isActive = tab.href === currentPath;
+            return <a href={tab.href}
+            class={
+                isActive? "font-semibold border-b-2 border-primary" : "font-normal"
+            }
+            >{tab.text}</a>;
+          })
+        }
+      </ul>
+    </MenuItems>
+  </Astronav>
+</nav>

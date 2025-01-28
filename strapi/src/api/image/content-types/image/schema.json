@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "images",
+  "info": {
+    "singularName": "image",
+    "pluralName": "images",
+    "displayName": "Image",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "page": {
+      "type": "enumeration",
+      "enum": [
+        "pocetna",
+        "uslugi",
+        "proekti",
+        "blog",
+        "kontakt"
+      ]
+    },
+    "alt": {
+      "type": "string"
+    },
+    "parentComponent": {
+      "type": "string"
+    }
+  }
+}

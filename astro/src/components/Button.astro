@@ -1,0 +1,13 @@
+---
+import Image from "astro/components/Image.astro";
+import ArrowRight from "./ArrowRight.astro";
+
+const { text, url } = Astro.props;
+---
+
+<button
+  class="bg-button border-2 border-primary text-white py-4 px-5 rounded-[40px] text-lg flex"
+  >
+  <a href={url}>{text}</a> 
+  <ArrowRight width="20" height="20" class="inline" fill="#FFF9E4" />
+</button>

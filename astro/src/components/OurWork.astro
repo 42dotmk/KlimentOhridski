@@ -1,0 +1,64 @@
+---
+import { Components, Pages } from "../constants";
+import { fetchPerPageAndComponent } from "../lib/strapi";
+import Image from "astro/components/Image.astro";
+import type { StrapiText } from "../types";
+
+import Backpack from "./icons/backpack.svg";
+import Municipality from "./icons/municipality.svg";
+import Heart from "./icons/heart.svg";
+import Children from "./icons/children.svg";
+
+const text = await fetchPerPageAndComponent<StrapiText[]>({
+  endpoint: "texts?populate=*",
+  wrappedByKey: "data",
+  page: Pages.Pocetna,
+  component: Components.OurWork,
+});
+
+const ourWork = [
+  {
+    icon: Backpack,
+    text: "49 основни училишта",
+  },
+  {
+    icon: Municipality,
+    text: "18 општини",
+  },
+  {
+    icon: Heart,
+    text: "5 центри за поддршка",
+  },
+  {
+    icon: Children,
+    text: "Ангажирани се 90 образовни асистенти кои даваат поддршка на 95 ученици.",
+  },
+];
+---
+
+<div class="px-3 lg:px-80">
+  <h1 class="text-3xl sm:text-5xl font-bold text-center pb-8 lg:pb-0">
+    Нашата работа
+  </h1>
+  <div class="flex flex-col gap-5 lg:gap-20 items-center">
+    <div
+      class="flex flex-col gap-8 text-justify text-lg font-medium px-4 lg:px-0 xl:w-[70%] pt-0 lg:pt-16"
+    >
+      {text?.[0]?.text}
+    </div>
+    <div class="grid grid-cols-3 gap-y-8 w-[90%]">
+      {
+        ourWork.map((m, index) => (
+          <div
+            class={`flex items-center flex-col ${
+              index === 3 ? "col-span-3 flex justify-center" : ""
+            }`}
+          >
+            <Image src={m.icon} alt={m.text} class="" />
+            <p class="text-center">{m.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+---
+import Image from 'astro/components/Image.astro';
+
+import Navigation from './Navigation.astro';
+import Logo from '../icons/logo.svg';
+---
+<header class="px-4 py-6 flex items-center justify-between lg:px-14">
+    <Image  src={Logo} alt='logo' loading='eager'/>
+    <Navigation />
+</header>

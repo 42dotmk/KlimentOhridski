@@ -1,0 +1,42 @@
+---
+import Image from "astro/components/Image.astro";
+
+import Cloud from "./icons/cloud.svg";
+import Rainbow from "./icons/rainbow.svg";
+
+import HeroImages from "./HeroImages.astro";
+import { fetchPerPageAndComponent } from "../lib/strapi";
+import type { StrapiText } from "../types";
+import { Components, Pages } from "../constants";
+
+const text = await fetchPerPageAndComponent<StrapiText[]>({
+  endpoint: "texts?populate=*",
+  wrappedByKey: "data",
+  page: Pages.Pocetna,
+  component: Components.Hero,
+});
+---
+
+<div
+  class="bg-backgroundHero max-w-[calc(100%-32px)] mx-4 sm:mx-14 sm:max-w-[calc(100%-112px)] rounded-[32px] border-primary border-2 h-auto"
+>
+  <Image
+    src={Rainbow}
+    alt="rainbow"
+    class="relative top-[-5%] left-[50%] sm:left-[70%]"
+    loading='eager'
+  />
+  <div class="px-[12%] text-center flex flex-col gap-5">
+    <p class="text-5xl font-bold">{text?.[0]?.text}</p>
+    <p class="text-lg font-medium">
+      {text?.[1]?.text}
+    </p>
+  </div>
+  <Image
+    src={Cloud}
+    alt="cloud"
+    class="relative top-[-115px] hidden md:block left-[-50px]"
+    loading='eager'
+  />
+  <HeroImages />
+</div>
