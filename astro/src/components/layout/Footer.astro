@@ -4,7 +4,7 @@ import Contact from "../Contact.astro";
 
 import Flower from "../icons/flower.svg";
 import Star from "../icons/star.svg";
-
+import getCurrentYear from "../../util/getCurrentYear";
 ---
 
 <div class='flex flex-col'>
@@ -16,7 +16,7 @@ import Star from "../icons/star.svg";
   <div class="flex flex-col justify-center items-center md:gap-40 gap-28">
     <Contact />
     <footer class="bg-primary text-center py-4 max-w-md font-medium text-base">
-      <p>2024 ОУРЦ Св. Климент Охридски - Ново Село, Струмица.</p>
+      <p>&copy {getCurrentYear()} ОУРЦ Св. Климент Охридски - Ново Село, Струмица.</p>
       <p>Сите права се задржани.</p>
     </footer>
   </div>
