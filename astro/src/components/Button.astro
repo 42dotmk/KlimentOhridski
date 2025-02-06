@@ -6,8 +6,12 @@ const { text, url } = Astro.props;
 ---
 
 <button
-  class="bg-button border-2 border-primary text-white py-4 px-5 rounded-[40px] text-lg flex"
-  >
-  <a href={url}>{text}</a> 
-  <ArrowRight width="20" height="20" class="inline" fill="#FFF9E4" />
+  class="bg-button border-2 border-primary text-white py-2.75 px-6 rounded-[40px] text-lg flex"
+>
+  <div>
+    <a href={url} class="flex flex-row items-center gap-2.75"
+      >{text}
+      <ArrowRight width="20" height="20" class="inline" fill="#FFF9E4" /></a
+    >
+  </div>
 </button>
