@@ -7,9 +7,6 @@ export default {
 			backgroundHero: '#FFCE48',
 			button: '#422800',
 		},
-		fontFamily: {
-			'roboto': ['Roboto', 'slab'],
-		},
 		textColor: {
 			primary: '#422800',
 			white: '#FFF9E4',

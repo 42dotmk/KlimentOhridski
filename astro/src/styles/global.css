@@ -1,2 +1,7 @@
+@import url(https://fonts.bunny.net/css?family=roboto-slab:400,700);
 @import "tailwindcss";
 @config "../../tailwind.config.mjs";
+
+@theme {
+    --font-display: 'Roboto Slab', serif;
+}
