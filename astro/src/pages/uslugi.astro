@@ -1,6 +1,7 @@
 ---
 import MainLayout from "../components/layout/MainLayout.astro";
 import ServicesList from "../components/ServicesList.astro";
+import ServicesDetails from "../components/ServicesDetails.astro";
 import { fetchApi } from "../lib/strapi";
 import type { Service } from "../types";
 
@@ -10,5 +11,8 @@ const services = await fetchApi<Service[]>({
 ---
 
 <MainLayout>
-  <ServicesList services={services} />
+  <div class="flex flex-col gap-10 md:gap-20">
+    <ServicesList services={services} />
+    <ServicesDetails />
+  </div>
 </MainLayout>
