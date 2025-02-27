@@ -1,0 +1,68 @@
+---
+import Gallery from "../../components/Gallery.astro";
+import MainLayout from "../../components/layout/MainLayout.astro";
+import { fetchOne, getAbsoluteUrl } from "../../lib/strapi";
+import type { BlockType, Service } from "../../types";
+import { Breadcrumbs, BreadcrumbsItem } from "accessible-astro-components";
+
+const { slug } = Astro.params;
+
+const service = await fetchOne<Service>({
+  endpoint: "services?populate=*",
+  wrappedByList: true,
+  query: {
+    "filters[name][$eq]": slug || "",
+  },
+});
+
+const imageUrl = getAbsoluteUrl(service.image.url)
+
+console.log(service)
+
+export const prerender = false;
+---
+
+<MainLayout>
+  <div class="space-content ml-3 mb-6 mt-2 md:ml-14 md:mb-14 md:mt-5">
+    <Breadcrumbs>
+      <BreadcrumbsItem href="/uslugi" label="Услуги" />
+      <BreadcrumbsItem currentPage={true} label={service.name} />
+    </Breadcrumbs>
+  </div>
+  <h1 class="text-3xl sm:text-5xl font-bold text-center lg:pb-0 mb-14 md:mb-20">
+    {service.name}
+  </h1>
+  <div class="px-9 md:px-28 xl:px-80 flex flex-col text-[18px]">
+    {
+      service.content.map((block: BlockType) => {
+        if (block.type === "paragraph") {
+          return (
+            <p class="mb-5">
+              {block.children.map((child) => child.text).join("")}
+            </p>
+          );
+        }
+        if (block.type === "heading") {
+          return (
+            <p class="font-bold text-2xl mb-4">
+              {block.children.map((child) => child.text).join("")}
+            </p>
+          );
+        }
+        if (block.type === "list") {
+          return (
+            <ol class="list-decimal">
+              {block.children.map((child) => (
+                <li class="pb-4">
+                  {child.children.map((child) => child.text).join("")}
+                </li>
+              ))}
+            </ol>
+          );
+        }
+        return null;
+      })
+    }
+  </div>
+  <!-- <Gallery imagesUrl={imageUrl} /> -->
+</MainLayout>

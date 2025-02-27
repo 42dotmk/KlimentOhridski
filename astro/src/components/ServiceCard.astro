@@ -4,7 +4,9 @@ import Image from "astro/components/Image.astro";
 const { imageUrl, name } = Astro.props;
 
 ---
+<a href={`/uslugi/${name}`}>
 <div class="border-2 border-primary rounded-lg p-5 flex flex-col gap-5 max-w-[360px] h-[354px]">
     <Image src={imageUrl} alt={name} width="320" height="220" class="rounded-lg h-56 object-cover" />
     <h2 class="text-xl font-medium">{name}</h2>
 </div>
+</a>

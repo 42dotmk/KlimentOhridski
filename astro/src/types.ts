@@ -26,6 +26,7 @@ export type ContactInformation = {
 
 export type Service = {
     name: string,
+    content: any;
     image: {
         url: string
     },
