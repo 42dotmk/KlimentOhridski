@@ -1,8 +1,8 @@
 ---
-import Gallery from "../../components/Gallery.astro";
+import BlocksContent from "../../components/BlocksContent.astro";
 import MainLayout from "../../components/layout/MainLayout.astro";
-import { fetchOne, getAbsoluteUrl } from "../../lib/strapi";
-import type { BlockType, Service } from "../../types";
+import { fetchOne } from "../../lib/strapi";
+import type { Service } from "../../types";
 import { Breadcrumbs, BreadcrumbsItem } from "accessible-astro-components";
 
 const { slug } = Astro.params;
@@ -11,13 +11,9 @@ const service = await fetchOne<Service>({
   endpoint: "services?populate=*",
   wrappedByList: true,
   query: {
-    "filters[name][$eq]": slug || "",
+    "filters[slug][$eq]": slug || "",
   },
 });
-
-const imageUrl = getAbsoluteUrl(service.image.url)
-
-console.log(service)
 
 export const prerender = false;
 ---
@@ -33,36 +29,6 @@ export const prerender = false;
     {service.name}
   </h1>
   <div class="px-9 md:px-28 xl:px-80 flex flex-col text-[18px]">
-    {
-      service.content.map((block: BlockType) => {
-        if (block.type === "paragraph") {
-          return (
-            <p class="mb-5">
-              {block.children.map((child) => child.text).join("")}
-            </p>
-          );
-        }
-        if (block.type === "heading") {
-          return (
-            <p class="font-bold text-2xl mb-4">
-              {block.children.map((child) => child.text).join("")}
-            </p>
-          );
-        }
-        if (block.type === "list") {
-          return (
-            <ol class="list-decimal">
-              {block.children.map((child) => (
-                <li class="pb-4">
-                  {child.children.map((child) => child.text).join("")}
-                </li>
-              ))}
-            </ol>
-          );
-        }
-        return null;
-      })
-    }
+    <BlocksContent element={service} />
   </div>
-  <!-- <Gallery imagesUrl={imageUrl} /> -->
 </MainLayout>

@@ -40,6 +40,7 @@ const { services } = Astro.props;
         <ServiceCard
           imageUrl={getAbsoluteUrl(service.image?.url)}
           name={service.name}
+          slug={service.slug}
         />
       ))
     }

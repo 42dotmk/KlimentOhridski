@@ -1,0 +1,55 @@
+---
+import type { BlockType } from "../types";
+
+const { element } = Astro.props;
+---
+
+<div>
+  {
+    element.content.map((block: BlockType) => {
+      if (block.type === "paragraph") {
+        return (
+          <p class="mb-5">
+            {block.children.map((child) => child.text).join("")}
+          </p>
+        );
+      }
+      if (block.type === "heading") {
+        return (
+          <p class="font-bold text-2xl mb-4">
+            {block.children.map((child) => child.text).join("")}
+          </p>
+        );
+      }
+      if (block.type === "list") {
+        const isOrdered = block.format == "ordered";
+        const listTag = isOrdered ? "ol" : "ul";
+
+        return (
+          <listTag class={`list-${isOrdered ? "disc" : "decimal"}`}>
+            {block.children.map((child) => (
+              <li class="pb-4">
+                {child.children.map((child) => child.text).join("")}
+              </li>
+            ))}
+          </listTag>
+        );
+      }
+      if (block.type === "image") {
+        const { url, height, width, alternativeText } = block.image;
+
+        return (
+          <img
+            src={url}
+            height={height}
+            width={width}
+            alt={alternativeText}
+            title={alternativeText}
+            class="rounded-[8px]"
+          />
+        );
+      }
+      return null;
+    })
+  }
+</div>

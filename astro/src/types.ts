@@ -25,7 +25,8 @@ export type ContactInformation = {
 }
 
 export type Service = {
-    name: string,
+    slug: string;
+    name: string;
     content: any;
     image: {
         url: string
@@ -34,9 +35,9 @@ export type Service = {
 
 export type Post = {
     id: number;
+    slug: string;
     title: string;
     content: any;
-    slug: string;
     createdAt: Date;
     updatedAt: Date;
     publishedAt: Date;
@@ -49,6 +50,7 @@ export type BlockType = {
     type: string;
     format: string;
     level?: number;
+    image?: any;
     children: {
         type: string;
         text: string;
