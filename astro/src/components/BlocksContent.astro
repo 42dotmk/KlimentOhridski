@@ -8,6 +8,7 @@ const { element } = Astro.props;
   {
     element.content.map((block: BlockType) => {
       if (block.type === "paragraph") {
+        console.log(block)
         return (
           <p class="mb-5">
             {block.children.map((child) => {
@@ -23,6 +24,10 @@ const { element } = Astro.props;
 
               if (child.underline) {
                 text = <u>{text}</u>;
+              }
+
+              if (child.strikethrough) {
+                text = <s>{text}</s>
               }
 
               return text;

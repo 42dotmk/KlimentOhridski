@@ -57,12 +57,14 @@ export type BlockType = {
         bold?: boolean;
         italic?: boolean;
         underline?: boolean;
+        strikethrough?: boolean;
         children: {
             type: string;
             text: string;
             bold?: boolean;
             italic?: boolean;
             underline?: boolean;
+            strikethrough?: boolean;
         }[];
     }[];
 };
