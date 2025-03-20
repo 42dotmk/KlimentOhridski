@@ -54,9 +54,15 @@ export type BlockType = {
     children: {
         type: string;
         text: string;
+        bold?: boolean;
+        italic?: boolean;
+        underline?: boolean;
         children: {
             type: string;
             text: string;
+            bold?: boolean;
+            italic?: boolean;
+            underline?: boolean;
         }[];
     }[];
 };

@@ -10,31 +10,105 @@ const { element } = Astro.props;
       if (block.type === "paragraph") {
         return (
           <p class="mb-5">
-            {block.children.map((child) => child.text).join("")}
-          </p>
-        );
-      }
-      if (block.type === "heading") {
-        return (
-          <p class="font-bold text-2xl mb-4">
-            {block.children.map((child) => child.text).join("")}
-          </p>
-        );
-      }
-      if (block.type === "list") {
-        const isOrdered = block.format == "ordered";
-        const listTag = isOrdered ? "ol" : "ul";
+            {block.children.map((child) => {
+              let text = child.text;
 
-        return (
-          <listTag class={`list-${isOrdered ? "disc" : "decimal"}`}>
-            {block.children.map((child) => (
-              <li class="pb-4">
-                {child.children.map((child) => child.text).join("")}
-              </li>
-            ))}
-          </listTag>
+              if (child.bold) {
+                text = <strong>{text}</strong>;
+              }
+
+              if (child.italic) {
+                text = <em>{text}</em>;
+              }
+
+              if (child.underline) {
+                text = <u>{text}</u>;
+              }
+
+              return text;
+            })}
+          </p>
         );
       }
+
+      if (block.type === "heading") {
+        const level = block.level;
+
+        if (level === 1) {
+          return (
+            <h1 class="font-bold text-6xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h1>
+          );
+        }
+
+        if (level === 2) {
+          return (
+            <h2 class="font-bold text-5xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h2>
+          );
+        }
+
+        if (level === 3) {
+          return (
+            <h3 class="font-bold text-4xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h3>
+          );
+        }
+
+        if (level === 4) {
+          return (
+            <h4 class="font-bold text-3xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h4>
+          );
+        }
+
+        if (level === 5) {
+          return (
+            <h5 class="font-bold text-2xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h5>
+          );
+        }
+
+        if (level === 6) {
+          return (
+            <h6 class="font-bold text-xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h6>
+          );
+        }
+      }
+
+      if (block.type === "list") {
+        const isOrdered = block.format === "ordered";
+
+        if (isOrdered) {
+          return (
+            <ol class="list-decimal">
+              {block.children.map((child) => (
+                <li class="pb-4">
+                  {child.children.map((child) => child.text).join("")}
+                </li>
+              ))}
+            </ol>
+          );
+        } else {
+          return (
+            <ul class="list-disc">
+              {block.children.map((child) => (
+                <li class="pb-4">
+                  {child.children.map((child) => child.text).join("")}
+                </li>
+              ))}
+            </ul>
+          );
+        }
+      }
+
       if (block.type === "image") {
         const { url, height, width, alternativeText } = block.image;
 
@@ -49,6 +123,7 @@ const { element } = Astro.props;
           />
         );
       }
+
       return null;
     })
   }
