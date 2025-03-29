@@ -2,6 +2,38 @@
 import type { BlockType } from "../types";
 
 const { element } = Astro.props;
+
+function wrapImgInDivs(element) {
+  const stack = [[]];
+  const indexes = []
+  element.content.forEach((block: BlockType,i) => {
+    if(element.content[i].type === "image") {
+     const index = stack.length - 1;
+     if(stack[index].length === 0) indexes.push(index);
+     stack[index].push(block) 
+    } else if (i > 0 && element.content[i - 1].type === "image") {
+      stack.push([])
+    }
+  })
+
+  const divs = stack.map((images)=> {
+    return {
+      type: "div",
+      children: images
+    }
+  })
+
+  divs.forEach((div: BlockType, i)=> {
+   const index = indexes[i];
+   element.content[index] = div; 
+  });
+
+  element.content = element.content.filter((block: BlockType)=> block.type !== "image")
+}
+
+
+wrapImgInDivs(element)
+
 ---
 
 <div>
@@ -125,6 +157,31 @@ const { element } = Astro.props;
             title={alternativeText}
             class="rounded-[8px]"
           />
+        );
+      }
+
+      if (block.type === "div") {
+        return (
+          <div class="my-4">
+            {block.children.map((child) => {
+              if (child.type === "image") {
+                const { url, height, width, alternativeText } = child.image;
+
+                return (
+                  <img
+                    src={url}
+                    height={height}
+                    width={width}
+                    alt={alternativeText}
+                    title={alternativeText}
+                    class="rounded-[8px]"
+                  />
+                );
+              }
+
+              return null;
+            })}
+          </div>
         );
       }
 
