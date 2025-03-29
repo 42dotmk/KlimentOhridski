@@ -8,9 +8,9 @@ function wrapImgInDivs(element) {
   const indexes = []
   element.content.forEach((block: BlockType,i) => {
     if(element.content[i].type === "image") {
-     const index = stack.length - 1;
-     if(stack[index].length === 0) indexes.push(index);
-     stack[index].push(block) 
+     const last = stack.length - 1;
+     if(stack[last].length === 0) indexes.push(i);
+     stack[last].push(block) 
     } else if (i > 0 && element.content[i - 1].type === "image") {
       stack.push([])
     }
