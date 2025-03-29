@@ -5,35 +5,36 @@ const { element } = Astro.props;
 
 function wrapImgInDivs(element) {
   const stack: BlockType[][] = [[]];
-  const indexes: number[] = []
+  const indexes: number[] = [];
+
   element.content.forEach((block: BlockType, i: number) => {
-    if(element.content[i].type === "image") {
-     const last = stack.length - 1;
-     if(stack[last].length === 0) indexes.push(i);
-     stack[last].push(block) 
+    if (element.content[i].type === "image") {
+      const last = stack.length - 1;
+      if (stack[last].length === 0) indexes.push(i);
+      stack[last].push(block);
     } else if (i > 0 && element.content[i - 1].type === "image") {
-      stack.push([])
+      stack.push([]);
     }
-  })
-
-  const divs: BlockType[] = stack.map((images: BlockType)=> {
-    return {
-      type: "div",
-      children: images
-    }
-  })
-
-  divs.forEach((div: BlockType, i: number)=> {
-   const index = indexes[i];
-   element.content[index] = div; 
   });
 
-  element.content = element.content.filter((block: BlockType)=> block.type !== "image")
+  const divs: BlockType[] = stack.map((images: BlockType) => {
+    return {
+      type: "image-container",
+      children: images,
+    };
+  });
+
+  divs.forEach((div: BlockType, i: number) => {
+    const index = indexes[i];
+    element.content[index] = div;
+  });
+
+  element.content = element.content.filter(
+    (block: BlockType) => block.type !== "image"
+  );
 }
 
-
-wrapImgInDivs(element)
-
+wrapImgInDivs(element);
 ---
 
 <div>
@@ -145,24 +146,9 @@ wrapImgInDivs(element)
         }
       }
 
-      if (block.type === "image") {
-        const { url, height, width, alternativeText } = block.image;
-
+      if (block.type === "image-container") {
         return (
-          <img
-            src={url}
-            height={height}
-            width={width}
-            alt={alternativeText}
-            title={alternativeText}
-            class="rounded-[8px]"
-          />
-        );
-      }
-
-      if (block.type === "div") {
-        return (
-          <div class="my-4">
+          <div class="my-4 flex flex-wrap gap-3">
             {block.children.map((child) => {
               if (child.type === "image") {
                 const { url, height, width, alternativeText } = child.image;
@@ -170,11 +156,11 @@ wrapImgInDivs(element)
                 return (
                   <img
                     src={url}
-                    height={height}
-                    width={width}
+                    height={height * 0.4}
+                    width={width * 0.4}
                     alt={alternativeText}
                     title={alternativeText}
-                    class="rounded-[8px]"
+                    class="rounded-[8px] flex-1/4 object-cover"
                   />
                 );
               }
