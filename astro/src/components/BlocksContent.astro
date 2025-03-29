@@ -4,9 +4,9 @@ import type { BlockType } from "../types";
 const { element } = Astro.props;
 
 function wrapImgInDivs(element) {
-  const stack = [[]];
-  const indexes = []
-  element.content.forEach((block: BlockType,i) => {
+  const stack: BlockType[][] = [[]];
+  const indexes: number[] = []
+  element.content.forEach((block: BlockType, i: number) => {
     if(element.content[i].type === "image") {
      const last = stack.length - 1;
      if(stack[last].length === 0) indexes.push(i);
@@ -16,14 +16,14 @@ function wrapImgInDivs(element) {
     }
   })
 
-  const divs = stack.map((images)=> {
+  const divs: BlockType[] = stack.map((images: BlockType)=> {
     return {
       type: "div",
       children: images
     }
   })
 
-  divs.forEach((div: BlockType, i)=> {
+  divs.forEach((div: BlockType, i: number)=> {
    const index = indexes[i];
    element.content[index] = div; 
   });
