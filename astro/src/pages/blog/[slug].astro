@@ -1,8 +1,9 @@
 ---
+import BlocksContent from "../../components/BlocksContent.astro";
 import Gallery from "../../components/Gallery.astro";
 import MainLayout from "../../components/layout/MainLayout.astro";
 import { fetchOne, getAbsoluteUrl } from "../../lib/strapi";
-import type { BlockType, Post } from "../../types";
+import type { Post } from "../../types";
 import { Breadcrumbs, BreadcrumbsItem } from "accessible-astro-components";
 
 const { slug } = Astro.params;
@@ -25,43 +26,14 @@ export const prerender = false;
   <div class="space-content ml-3 mb-6 mt-2 md:ml-14 md:mb-14 md:mt-5">
     <Breadcrumbs>
       <BreadcrumbsItem href="/blog" label="Блог" />
-      <BreadcrumbsItem currentPage={true} label={post.title}/>
+      <BreadcrumbsItem currentPage={true} label={post.title} />
     </Breadcrumbs>
   </div>
   <h1 class="text-3xl sm:text-5xl font-bold text-center lg:pb-0 mb-14 md:mb-20">
     {post.title}
   </h1>
   <div class="px-9 md:px-28 xl:px-80 flex flex-col text-[18px]">
-    {
-      post.content.map((block: BlockType) => {
-        if (block.type === "paragraph") {
-          return (
-            <p class="mb-5">
-              {block.children.map((child) => child.text).join("")}
-            </p>
-          );
-        }
-        if (block.type === "heading") {
-          return (
-            <p class="font-bold text-2xl mb-4">
-              {block.children.map((child) => child.text).join("")}
-            </p>
-          );
-        }
-        if (block.type === "list") {
-          return (
-            <ol class="list-decimal">
-              {block.children.map((child) => (
-                <li class="pb-4">
-                  {child.children.map((child) => child.text).join("")}
-                </li>
-              ))}
-            </ol>
-          );
-        }
-        return null;
-      })
-    }
+    <BlocksContent element={post} />
   </div>
   {imagesUrl && <Gallery imagesUrl={imagesUrl} />}
 </MainLayout>

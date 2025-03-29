@@ -1,0 +1,25 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { Service } from "../../types";
+import { fetchApi } from "../../lib/strapi";
+import MainLayout from "../../components/layout/MainLayout.astro";
+import ServicesList from "../../components/ServicesList.astro";
+import ServicesDetails from "../../components/ServicesDetails.astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const services = await fetchApi<Service[]>({
+    endpoint: "services?populate=*",
+  });
+
+  return paginate(services, { pageSize: 6 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<MainLayout>
+  <div class="flex flex-col gap-10 md:gap-20">
+    <ServicesList services={page.data} />
+    <ServicesDetails />
+  </div>
+</MainLayout>

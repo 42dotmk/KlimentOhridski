@@ -1,0 +1,177 @@
+---
+import type { BlockType } from "../types";
+
+const { element } = Astro.props;
+
+function wrapImgInDivs(element) {
+  const stack: BlockType[][] = [[]];
+  const indexes: number[] = [];
+
+  element.content.forEach((block: BlockType, i: number) => {
+    if (element.content[i].type === "image") {
+      const last = stack.length - 1;
+      if (stack[last].length === 0) indexes.push(i);
+      stack[last].push(block);
+    } else if (i > 0 && element.content[i - 1].type === "image") {
+      stack.push([]);
+    }
+  });
+
+  const divs: BlockType[] = stack.map((images: BlockType) => {
+    return {
+      type: "image-container",
+      children: images,
+    };
+  });
+
+  divs.forEach((div: BlockType, i: number) => {
+    const index = indexes[i];
+    element.content[index] = div;
+  });
+
+  element.content = element.content.filter(
+    (block: BlockType) => block.type !== "image"
+  );
+}
+
+wrapImgInDivs(element);
+---
+
+<div>
+  {
+    element.content.map((block: BlockType) => {
+      if (block.type === "paragraph") {
+        return (
+          <p class="mb-5">
+            {block.children.map((child) => {
+              let text = child.text;
+
+              if (child.bold) {
+                text = <strong>{text}</strong>;
+              }
+
+              if (child.italic) {
+                text = <em>{text}</em>;
+              }
+
+              if (child.underline) {
+                text = <u>{text}</u>;
+              }
+
+              if (child.strikethrough) {
+                text = <s>{text}</s>;
+              }
+
+              return text;
+            })}
+          </p>
+        );
+      }
+
+      if (block.type === "heading") {
+        const level = block.level;
+
+        if (level === 1) {
+          return (
+            <h1 class="font-bold text-6xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h1>
+          );
+        }
+
+        if (level === 2) {
+          return (
+            <h2 class="font-bold text-5xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h2>
+          );
+        }
+
+        if (level === 3) {
+          return (
+            <h3 class="font-bold text-4xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h3>
+          );
+        }
+
+        if (level === 4) {
+          return (
+            <h4 class="font-bold text-3xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h4>
+          );
+        }
+
+        if (level === 5) {
+          return (
+            <h5 class="font-bold text-2xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h5>
+          );
+        }
+
+        if (level === 6) {
+          return (
+            <h6 class="font-bold text-xl mb-4 block">
+              {block.children.map((child) => child.text).join("")}
+            </h6>
+          );
+        }
+      }
+
+      if (block.type === "list") {
+        const isOrdered = block.format === "ordered";
+
+        if (isOrdered) {
+          return (
+            <ol class="list-decimal">
+              {block.children.map((child) => (
+                <li class="pb-4">
+                  {child.children.map((child) => child.text).join("")}
+                </li>
+              ))}
+            </ol>
+          );
+        } else {
+          return (
+            <ul class="list-disc">
+              {block.children.map((child) => (
+                <li class="pb-4">
+                  {child.children.map((child) => child.text).join("")}
+                </li>
+              ))}
+            </ul>
+          );
+        }
+      }
+
+      if (block.type === "image-container") {
+        return (
+          <div class="my-4 flex flex-wrap gap-3">
+            {block.children.map((child) => {
+              if (child.type === "image") {
+                const { url, height, width, alternativeText } = child.image;
+
+                return (
+                  <img
+                    src={url}
+                    height={height * 0.4}
+                    width={width * 0.4}
+                    alt={alternativeText}
+                    title={alternativeText}
+                    class="rounded-[8px] flex-1/4 object-cover"
+                  />
+                );
+              }
+
+              return null;
+            })}
+          </div>
+        );
+      }
+
+      return null;
+    })
+  }
+</div>

@@ -1,0 +1,34 @@
+---
+import BlocksContent from "../../components/BlocksContent.astro";
+import MainLayout from "../../components/layout/MainLayout.astro";
+import { fetchOne } from "../../lib/strapi";
+import type { Service } from "../../types";
+import { Breadcrumbs, BreadcrumbsItem } from "accessible-astro-components";
+
+const { slug } = Astro.params;
+
+const service = await fetchOne<Service>({
+  endpoint: "services?populate=*",
+  wrappedByList: true,
+  query: {
+    "filters[slug][$eq]": slug || "",
+  },
+});
+
+export const prerender = false;
+---
+
+<MainLayout>
+  <div class="space-content ml-3 mb-6 mt-2 md:ml-14 md:mb-14 md:mt-5">
+    <Breadcrumbs>
+      <BreadcrumbsItem href="/uslugi" label="Услуги" />
+      <BreadcrumbsItem currentPage={true} label={service.name} />
+    </Breadcrumbs>
+  </div>
+  <h1 class="text-3xl sm:text-5xl font-bold text-center lg:pb-0 mb-14 md:mb-20">
+    {service.name}
+  </h1>
+  <div class="px-9 md:px-28 xl:px-80 flex flex-col text-[18px]">
+    <BlocksContent element={service} />
+  </div>
+</MainLayout>

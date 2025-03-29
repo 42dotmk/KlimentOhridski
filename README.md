@@ -53,7 +53,7 @@ Import the existing database:
 
 ```
 # Also confirm the prompt it gives
-npm run strapi import -- -f ./export_20250128185350.tar.gz
+npm run strapi import -- -f ./data-export.tar.gz
 ```
 
 Visit the Strapi admin page (see below to start the development server) to register an admin account. If you don't see that option, run this command with proper details:
